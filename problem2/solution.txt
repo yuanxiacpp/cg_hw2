@@ -1,0 +1,1 @@
+2. As showed in Chapter 1 of Banterle's reading, figure 1.8 (b), the color of x = 0.1 y = 0.7 can be viewed by human eye but cannot be represented with RGB primaries. Only the colors inside the triangle can be represented by RGB primaries.
