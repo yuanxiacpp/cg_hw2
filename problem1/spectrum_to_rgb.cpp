@@ -53,16 +53,16 @@ waveMap readInput(string &filename, int vector_length) {
 
 }
 
-void checkRange(int &x) {
+void checkRange(double &x) {
   if (x < 0)
-    x = 0;
+    x = 0.0;
   else if (x > 255)
-    x = 255;
+    x = 255.0;
  
   return;
 }
 
-void calculateXYZ(waveMap &dict, waveMap &target, int idx, int &r, int &g, int &b) {
+void calculateXYZ(waveMap &dict, waveMap &target, int idx, double &r, double &g, double &b) {
   double sumx = 0;
   double sumy = 0;
   double sumz = 0;
@@ -79,9 +79,11 @@ void calculateXYZ(waveMap &dict, waveMap &target, int idx, int &r, int &g, int &
   //sumy = sumy / sum;
   //sumz = sumz / sum;
   
-  r = 255 * (3.2479 * sumx - 1.5427 * sumy - 0.5019 * sumz);
-  g = 255 * (-0.9733 * sumx + 1.8788 * sumy + 0.0430 * sumz);
-  b = 255 * (0.057 * sumx - 0.2045 * sumy + 1.0573 * sumz);
+  r = 3.2479 * sumx - 1.5427 * sumy - 0.5019 * sumz;
+  g = -0.9733 * sumx + 1.8788 * sumy + 0.0430 * sumz;
+  b = 0.057 * sumx - 0.2045 * sumy + 1.0573 * sumz;
+
+  //cout << "(" << r << ", " << g << ", " << b << ")" << endl; 
 
   checkRange(r);
   checkRange(g);
@@ -105,13 +107,55 @@ int main() {
   //viewHashmap(target);
   //viewHashmap(dict);
 
+  vector<vector<double> > potentialRGB;
+  double ratioR = 1, ratioG = 1, ratioB = 1;
+  double maxR = 0.0, maxG = 0.0, maxB = 0.0;
+
   for (int i = 0; i < dict_length; i++) {
-    int r, g, b;
+    double r, g, b;
     calculateXYZ(dict, target, i, r, g, b);
     cout << "(" << r << ", " << g << ", " << b << ")" << endl; 
+    vector<double> elem(3, 0.0);
+    elem[0] = r;
+    elem[1] = g;
+    elem[2] = b;
+
+
+    if (r > maxR) {
+      maxR = r;
+      ratioR = 255.0 / r;
+    }
+    if (g > maxG) {
+      maxG = g;
+      ratioG = 255.0 / g;
+    }
+    if (b > maxB) {
+      maxB = b;
+      ratioB = 255.0 / b;
+    }
+
+
+    potentialRGB.push_back(elem);
+  }
+
+
+  cout << "max RGB: " ;
+  cout << maxR << ", " << maxG << ", " << maxB << endl;
+  cout << "ratio RGB: " ;
+  cout << ratioR << "|" << ratioG << "|" << ratioB << endl << endl;
+
+  
+
+  for (int i = 0; i < potentialRGB.size(); i++) {
+    potentialRGB[i][0] *= ratioR;
+    potentialRGB[i][1] *= ratioG;
+    potentialRGB[i][2] *= ratioB;
+  
+    cout << (int)round(potentialRGB[i][0]) << ", " 
+	 << (int)round(potentialRGB[i][1]) << ", "
+	 << (int)round(potentialRGB[i][2]) << endl;
   }
   
   
-
   return 0;
 }
