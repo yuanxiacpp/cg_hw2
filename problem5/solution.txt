@@ -1,0 +1,9 @@
+5. 
+
+a) focal length in pixel is 1000 according to the matrix
+
+b) let me denote fov_x as the field of view in x axis, fov_y represents y axis
+we know from the matrix that center(x, y) = (320, 640), hence dx = 640, dy = 480
+
+fov_x = 2 * arctan(dx/(2*f)) = 2 * arctan(640/(2*1000)) = 0.6194
+fov_y = 2 * arctan(dy/(2*f)) = 2 * arctan(480/(2*1000)) = 0.4711
