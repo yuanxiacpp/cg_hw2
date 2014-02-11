@@ -1,4 +1,4 @@
-function imgHDR = myBuildHDR(dir_name, format, lin_type, weightFun, stack, stack_exposure, lamda)
+function imgHDR = myBuildHDR(dir_name, format, lin_type, weightFun, stack, stack_exposure, lamda,jpgFile)
     if(~exist('weightFun','var'))
         weightFun = 'all';
     end
@@ -33,10 +33,14 @@ function imgHDR = myBuildHDR(dir_name, format, lin_type, weightFun, stack, stack
             lin_fun = zeros(256,nCol);
             log_stack_exposure = log(stack_exposure);
 
+            h = figure;
             for i=1:nCol
                 g = gsolve(stack_samples(:,:,i),log_stack_exposure,lamda,W);
+                hold on;
+                plot(g);                
                 lin_fun(:,i) = (g/max(g));
             end
+            saveas(h, jpgFile, 'jpg');
 
         otherwise    
     end

@@ -15,18 +15,26 @@ while ischar(tline)
     stack_exposure = ReadLDRExif(image_dir, 'jpg');
     
     disp('4) Build the radiance map using the stack and stack_exposure');
-    for lamda=5:15
+    for lamda=5:5:50
         %disp(lamda););
         
         out = textscan(tline, '%s', 'delimiter', '/');
         [x, y] = size(out{1});
-        outFile = strcat('problema_output/', out{1}{x}, '/lamda-', num2str(lamda), '.hdr')
+        
+        name = strcat('problema_output/', out{1}{x}, '/lamda-', num2str(lamda));
+        hdrFile = strcat(name, '.hdr');
+        jpgFile = strcat(name, '.jpg');
+        
+        imgHDR = myBuildHDR([], [], 'tabledDeb97', 'Gauss', stackOut, stack_exposure, lamda, jpgFile);
+        
+        %disp('5) Save radiance map in the .hdr format');
+        %hdrimwrite(imgHDR, hdrFile);
         
         
-        imgHDR = myBuildHDR([], [], 'tabledDeb97', 'Gauss', stackOut, stack_exposure, lamda);
+        %pngFile = strcat(name, '.png');
+        %imgTMO = ReinhardTMO(imgHDR);
+        %imwrite(GammaTMO(imgHDR, 2.2, 0, 0), pngFile);
         
-        disp('5) Save radiance map in the .hdr format');
-        hdrimwrite(imgHDR, outFile);
         %disp('6) Show the tone mapped version of the radiance map');
         %h = figure(1);
         %set(h, 'Name', 'Tone mapped built HDR Image');
