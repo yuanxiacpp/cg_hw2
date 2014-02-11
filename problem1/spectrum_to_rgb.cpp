@@ -108,30 +108,29 @@ int main() {
   //viewHashmap(dict);
 
   vector<vector<double> > potentialRGB;
-  double ratioR = 1, ratioG = 1, ratioB = 1;
-  double maxR = 0.0, maxG = 0.0, maxB = 0.0;
+  double maxP = 0.0;
+  double ratio = 1.0;
 
   for (int i = 0; i < dict_length; i++) {
     double r, g, b;
     calculateXYZ(dict, target, i, r, g, b);
-    cout << "(" << r << ", " << g << ", " << b << ")" << endl; 
     vector<double> elem(3, 0.0);
     elem[0] = r;
     elem[1] = g;
     elem[2] = b;
 
 
-    if (r > maxR) {
-      maxR = r;
-      ratioR = 255.0 / r;
+    if (r > maxP) {
+      maxP = r;
+      ratio = 255.0 / r;
     }
-    if (g > maxG) {
-      maxG = g;
-      ratioG = 255.0 / g;
+    if (g > maxP) {
+      maxP = g;
+      ratio = 255.0 / g;
     }
-    if (b > maxB) {
-      maxB = b;
-      ratioB = 255.0 / b;
+    if (b > maxP) {
+      maxP = b;
+      ratio = 255.0 / b;
     }
 
 
@@ -139,21 +138,21 @@ int main() {
   }
 
 
-  cout << "max RGB: " ;
-  cout << maxR << ", " << maxG << ", " << maxB << endl;
-  cout << "ratio RGB: " ;
-  cout << ratioR << "|" << ratioG << "|" << ratioB << endl << endl;
+  //cout << "max RGB: " << maxP << endl;
+  //cout << "ratio: " << ratio << endl;
 
   
 
   for (int i = 0; i < potentialRGB.size(); i++) {
-    potentialRGB[i][0] *= ratioR;
-    potentialRGB[i][1] *= ratioG;
-    potentialRGB[i][2] *= ratioB;
+    potentialRGB[i][0] *= ratio;
+    potentialRGB[i][1] *= ratio;
+    potentialRGB[i][2] *= ratio;
   
-    cout << (int)round(potentialRGB[i][0]) << ", " 
+    cout << "color #" << i+1 << " : (" 
+	 << (int)round(potentialRGB[i][0]) << ", " 
 	 << (int)round(potentialRGB[i][1]) << ", "
-	 << (int)round(potentialRGB[i][2]) << endl;
+	 << (int)round(potentialRGB[i][2]) 
+	 << ")" << endl;
   }
   
   
